@@ -13,7 +13,7 @@ jobs:
           name : Maven Test the Project
           command : |
             chmod +x mvnw
-            ./mvnw test
+            ./mvnw surefire:test
 
 workflows:
   version: 2
