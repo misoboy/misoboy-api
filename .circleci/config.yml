@@ -5,7 +5,7 @@ defaults:
 jobs:
   build_test:
     docker:
-      - image: maven:3-openjdk-8
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
       # run test
