@@ -24,7 +24,7 @@ public class MainControllerTest extends AbstractSpringTest {
     @Test
     public void ut_GET_main_101() throws Exception {
         log.debug("ut_GET_main_101 : run test");
-        mockMvc.perform(MockMvcRequestBuilders.get("/main/"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/main/"))
                 .andDo(print()).andExpect(status().isOk());
     }
 }

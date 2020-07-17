@@ -2,13 +2,11 @@ package kr.misoboy.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -16,7 +14,7 @@ import java.util.Collections;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration extends WebMvcConfigurationSupport {
+public class SwaggerConfiguration {
 
     @Bean
     public Docket api() {
@@ -25,25 +23,26 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
                 .apis(RequestHandlerSelectors.basePackage("kr.misoboy.api.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                .pathMapping("/");
+                .apiInfo(apiInfo())
+                .pathMapping("/")
+                .securitySchemes(Collections.singletonList(new BasicAuth("xBasic")))
+                .securityContexts(Collections.singletonList(xBasicSecurityContext()));
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "My REST API",
-                "Some custom description of API.",
-                "API TOS",
+                "Basic Authentication\nid : test\npassword: test123",
+                "API v1",
                 "Terms of service",
                 new Contact("Chiseok Song", "https://dev.misoboy.kr", "misoboy.kor@gmail.com"),
                 "License of API", "API license URL", Collections.emptyList());
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    private SecurityContext xBasicSecurityContext() {
+        return SecurityContext.builder()
+                .securityReferences(Collections.singletonList(
+                        new SecurityReference("xBasic", new AuthorizationScope[0])))
+                .build();
     }
 }

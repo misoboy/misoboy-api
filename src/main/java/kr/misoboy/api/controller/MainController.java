@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @Api(tags = {"1. 샘플 메인"})
 @RestController
-@RequestMapping(value = "/main")
+@RequestMapping(value = "/v1/main")
 public class MainController {
 
     @Resource(name = "mainService")
