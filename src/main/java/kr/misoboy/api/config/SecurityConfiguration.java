@@ -1,5 +1,6 @@
 package kr.misoboy.api.config;
 
+import kr.misoboy.api.common.SecurityConst;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,9 +28,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("test")
-                .password("{noop}test123")
-                .roles("USER");
+                .withUser(SecurityConst.API_ACCESS_USER_ID)
+                .password("{noop}" + SecurityConst.API_ACCESS_USER_PWD)
+                .roles(SecurityConst.API_ACCESS_USER_ROLE);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/v1/**").hasRole("USER")
+                .antMatchers("/v1/**").hasRole(SecurityConst.API_ACCESS_USER_ROLE)
                 .anyRequest()
                 .authenticated()
                 .and()
