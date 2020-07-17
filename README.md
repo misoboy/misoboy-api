@@ -1,4 +1,4 @@
-## API Demo Application
+## API Demo Application [![CircleCI](https://circleci.com/gh/misoboy/misoboy-api/tree/master.svg?style=shield)](https://circleci.com/gh/misoboy/misoboy-api/tree/master)
 
 
 ## Requirements
