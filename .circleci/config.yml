@@ -1,0 +1,27 @@
+version: 2
+defaults:
+  environment:
+
+jobs:
+  build_test:
+    docker:
+      - image: maven:3-openjdk-8
+    steps:
+      - checkout
+      # run test
+      - run:
+          name : Maven Test the Project
+          command : |
+            ./mvnw clean test
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build:
+          filters:git
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - build_test
