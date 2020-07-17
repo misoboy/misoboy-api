@@ -12,6 +12,7 @@ jobs:
       - run:
           name : Maven Test the Project
           command : |
+            chmod +x mvnw
             ./mvnw clean test
 
 workflows:
