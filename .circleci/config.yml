@@ -19,7 +19,7 @@ workflows:
   workflow:
     jobs:
       - build:
-          filters:git
+          filters:
             branches:
               only: master
       - deploy:
