@@ -7,7 +7,7 @@
 ## Usage
 1. Git clone
 ```bash
-$ git clone 블라블라
+$ git clone https://github.com/misoboy/misoboy-api.git
 ```
 
 2. Maven Build
@@ -21,6 +21,8 @@ Alternatively, you can run the app directly without packaging it like so
 ```bash
 $ ./mvnw spring-boot:run
 ```
+
+Then open link in the browser [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ## Unit testing
 ```bash
