@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.misoboy.api.repository.FollowMapper">
+
+    <select id="selectFollowList" parameterType="followModel" resultType="followModel">
+        /* FollowMapper.selectFollowList : 팔로우 목록 조회 */
+        <![CDATA[
+        SELECT EMPLYR_ID, TRGET_EMPLYR_ID, PERM_AT, REQUST_DT, PERM_DT
+        FROM TB_FOLLOW
+        WHERE EMPLYR_ID = #{emplyrId} AND PERM_AT = 'Y'
+        ]]>
+    </select>
+
+    <select id="selectFollowerList" parameterType="followModel" resultType="followModel">
+        /* FollowMapper.selectFollowerList : 팔로워 목록 조회 */
+        <![CDATA[
+        SELECT EMPLYR_ID, TRGET_EMPLYR_ID, PERM_AT, REQUST_DT, PERM_DT
+        FROM TB_FOLLOW
+        WHERE TRGET_EMPLYR_ID = #{emplyrId} AND PERM_AT = 'Y'
+        ]]>
+    </select>
+
+    <select id="selectFollowDetail" parameterType="followModel" resultType="followModel">
+        /* FollowMapper.selectFollowDetail : 팔로우 상세 조회 */
+        <![CDATA[
+        SELECT EMPLYR_ID, TRGET_EMPLYR_ID, PERM_AT, REQUST_DT, PERM_DT
+        FROM TB_FOLLOW
+        WHERE EMPLYR_ID = #{emplyrId} AND TRGET_EMPLYR_ID = #{trgetEmplyrId}
+        ]]>
+    </select>
+
+    <insert id="insertFollow" parameterType="followModel">
+        /* FollowMapper.insertFollow : 팔로우 등록 */
+        <![CDATA[
+        INSERT INTO TB_FOLLOW(EMPLYR_ID, TRGET_EMPLYR_ID, PERM_AT, REQUST_DT)
+        VALUES(#{emplyrId}, #{trgetEmplyrId}, 'N', NOW())
+        ]]>
+    </insert>
+
+    <update id="updateFollowPermit" parameterType="followModel">
+        /* FollowMapper.updateFollowPermit : 팔로우 허용 수정 */
+        <![CDATA[
+        UPDATE TB_FOLLOW SET
+                PERM_AT = 'Y',
+                PERM_DT = NOW()
+        WHERE EMPLYR_ID = #{emplyrId} AND TRGET_EMPLYR_ID = #{trgetEmplyrId}
+        ]]>
+    </update>
+
+    <delete id="deleteFollow" parameterType="followModel">
+        /* FollowMapper.deleteFollow : 팔로우 삭제 */
+        <![CDATA[
+        DELETE FROM TB_FOLLOW
+        WHERE EMPLYR_ID = #{emplyrId} AND TRGET_EMPLYR_ID = #{trgetEmplyrId}
+        ]]>
+    </delete>
+</mapper>

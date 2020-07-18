@@ -16,6 +16,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {
+            "/h2-console/**",
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -43,6 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .httpBasic()
+                .and()
+                .headers().frameOptions().sameOrigin()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint())

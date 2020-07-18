@@ -26,7 +26,8 @@ public class SwaggerConfiguration {
                 .apiInfo(apiInfo())
                 .pathMapping("/")
                 .securitySchemes(Collections.singletonList(new BasicAuth("xBasic")))
-                .securityContexts(Collections.singletonList(xBasicSecurityContext()));
+                .securityContexts(Collections.singletonList(xBasicSecurityContext()))
+                .useDefaultResponseMessages(false);
     }
 
     private ApiInfo apiInfo() {

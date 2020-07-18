@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.misoboy.api.repository.FeedMapper">
+
+    <select id="selectFeedList" parameterType="feedModel" resultType="feedModel">
+        /* FeedMapper.selectFeedList : 피드 목록 조회 */
+        <![CDATA[
+        SELECT FEED_SN, REGIST_EMPLYR_ID, CN, ATCH_FILE_ID, REGIST_DT, UPDT_DT, DELETE_DT
+        FROM TB_FEED
+        WHERE REGIST_EMPLYR_ID = #{registEmplyrId} AND DELETE_AT = 'N'
+        ]]>
+    </select>
+
+    <select id="selectFeedDetail" parameterType="feedModel" resultType="feedModel">
+        /* FeedMapper.selectFeedDetail : 피드 상세 조회 */
+        <![CDATA[
+        SELECT FEED_SN, REGIST_EMPLYR_ID, CN, ATCH_FILE_ID, REGIST_DT, UPDT_DT, DELETE_DT
+        FROM TB_FEED
+        WHERE REGIST_EMPLYR_ID = #{registEmplyrId} AND FEED_SN = #{feedSn} AND DELETE_AT = 'N'
+        ]]>
+    </select>
+
+    <insert id="insertFeed" parameterType="feedModel">
+        <selectKey resultType="java.lang.Integer" keyColumn="FEED_SN" keyProperty="feedSn" order="BEFORE">
+            SELECT NVL(MAX(FEED_SN), 0) + 1 AS FEED_SN FROM TB_FEED
+        </selectKey>
+        /* FeedMapper.insertFeed : 피드 등록 */
+        <![CDATA[
+        INSERT INTO TB_FEED(FEED_SN, REGIST_EMPLYR_ID, CN, REGIST_DT, DELETE_AT)
+        VALUES(#{feedSn}, #{registEmplyrId}, #{cn}, NOW(), 'N')
+        ]]>
+    </insert>
+
+    <update id="updateFeed" parameterType="feedModel">
+        /* FeedMapper.updateFeed : 피드 수정 */
+        <![CDATA[
+        UPDATE TB_FEED SET
+               CN = #{cn},
+               UPDT_DT = NOW()
+        WHERE REGIST_EMPLYR_ID = #{registEmplyrId} AND FEED_SN = #{feedSn}
+        ]]>
+    </update>
+
+    <update id="deleteFeed" parameterType="feedModel">
+        /* FeedMapper.deleteFeed : 피드 삭제 */
+        <![CDATA[
+        UPDATE TB_FEED SET
+               DELETE_AT = 'Y',
+               DELETE_DT = NOW()
+        WHERE REGIST_EMPLYR_ID = #{registEmplyrId} AND FEED_SN = #{feedSn}
+        ]]>
+    </update>
+</mapper>
