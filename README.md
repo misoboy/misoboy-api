@@ -1,4 +1,4 @@
-## API Demo Application [![CircleCI](https://circleci.com/gh/misoboy/misoboy-api/tree/master.svg?style=shield)](https://circleci.com/gh/misoboy/misoboy-api/tree/master)
+## API Demo Application [![CircleCI](https://circleci.com/gh/misoboy/misoboy-api/tree/master.svg?style=shield)](https://circleci.com/gh/misoboy/misoboy-api/tree/master) [![Coverage Status](https://coveralls.io/repos/github/misoboy/misoboy-api/badge.svg?branch=master)](https://coveralls.io/github/misoboy/misoboy-api?branch=master)
 
 
 ## Requirements

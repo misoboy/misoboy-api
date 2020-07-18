@@ -13,7 +13,7 @@ jobs:
           name : Maven Test the Project
           command : |
             chmod +x mvnw
-            ./mvnw -e test
+            ./mvnw -e clean test jacoco:report coveralls:report
 
 workflows:
   version: 2
