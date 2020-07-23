@@ -7,7 +7,11 @@
         <![CDATA[
         SELECT FEED_SN, REGIST_EMPLYR_ID, CN, ATCH_FILE_ID, REGIST_DT, UPDT_DT, DELETE_DT
         FROM TB_FEED
-        WHERE REGIST_EMPLYR_ID = #{registEmplyrId} AND DELETE_AT = 'N'
+        WHERE REGIST_EMPLYR_ID = #{registEmplyrId} OR REGIST_EMPLYR_ID IN (
+            SELECT TRGET_EMPLYR_ID FROM TB_FOLLOW
+            WHERE EMPLYR_ID = #{registEmplyrId} AND PERM_AT = 'Y'
+        ) AND DELETE_AT = 'N'
+        ORDER BY REGIST_DT DESC
         ]]>
     </select>
 
