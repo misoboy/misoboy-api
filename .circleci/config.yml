@@ -18,6 +18,11 @@ jobs:
             chmod +x mvnw
             ./mvnw -e clean test jacoco:report coveralls:report
             mkdir deploy
+            pwd
+            ls -al
+            ls -al ./target
+            ls -al ./docker
+            ls -al ./k8s
             cp ./target/*.jar ./deploy
             mv ./docker ./deploy
             mv ./k8s ./deploy
