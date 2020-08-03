@@ -17,9 +17,10 @@ jobs:
           command : |
             chmod +x mvnw
             ./mvnw -e clean test jacoco:report coveralls:report
+            pwd
 
       - persist_to_workspace:
-          root: /home/circleci
+          root: /home/circleci/project
           paths:
             - k8s
             - docker
@@ -30,7 +31,7 @@ jobs:
       - image: circleci/openjdk:8-jdk
     steps:
       - attach_workspace:
-          at: /home/circleci
+          at: /home/circleci/project
 
       - run:
           name: Docker Build & Deploy
