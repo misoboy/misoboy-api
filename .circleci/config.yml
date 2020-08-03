@@ -24,7 +24,7 @@ jobs:
           paths:
             - k8s
             - docker
-            - target
+            - target/*.jar
 
   build_deploy:
     docker:
@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Docker Build & Deploy
           command: |
-            docker login -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
+            docker login https://docker.pkg.github.com -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
             STABLE_TAG='1.0'
             TAG="${STABLE_TAG}.${CIRCLE_BUILD_NUM}"
             TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
