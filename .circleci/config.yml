@@ -39,10 +39,14 @@ jobs:
             STABLE_TAG='1.0'
             TAG="${STABLE_TAG}.${CIRCLE_BUILD_NUM}"
             TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
+            STABLE_IMAGE="${TAGGED_IMAGE}:${STABLE_TAG}"
             IMAGE="${TAGGED_IMAGE}:${TAG}"
             echo "image: $IMAGE"
+            echo "stable image: $STABLE_IMAGE"
             docker build -t "$IMAGE" ./deploy/
+            docker tag "${IMAGE}" "${STABLE_IMAGE}"
             docker push "${IMAGE}"
+            docker push "${STABLE_IMAGE}"
 
 workflows:
   version: 2
