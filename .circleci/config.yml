@@ -18,11 +18,6 @@ jobs:
             chmod +x mvnw
             ./mvnw -e clean package jacoco:report coveralls:report
             mkdir deploy
-            pwd
-            ls -al
-            ls -al ./target
-            ls -al ./docker
-            ls -al ./k8s
             cp ./target/*.jar ./deploy
             mv ./docker ./deploy
             mv ./k8s ./deploy
@@ -41,9 +36,6 @@ jobs:
       - run:
           name: Docker Build & Deploy
           command: |
-            pwd
-            ls -al
-            ls -al ./deploy
             docker login https://docker.pkg.github.com -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
             STABLE_TAG='1.0'
             TAG="${STABLE_TAG}.${CIRCLE_BUILD_NUM}"
