@@ -6,5 +6,5 @@ COPY ../target/api-0.0.1-SNAPSHOT.jar ./
 COPY entry-point.sh ./
 
 EXPOSE 8080
-ENTRYPOINT["entry-point.sh"]
+ENTRYPOINT["/usr/app/entry-point.sh"]
 
