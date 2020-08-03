@@ -8,6 +8,10 @@ jobs:
       - image: circleci/openjdk:8-jdk
     steps:
       - checkout
+      -
+      - attach_workspace:
+          at: /home/circleci
+
       # run test
       - run:
           name : Maven Test the Project
@@ -15,11 +19,44 @@ jobs:
             chmod +x mvnw
             ./mvnw -e clean test jacoco:report coveralls:report
 
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - k8s
+            - docker
+            - target
+
+  build_deploy:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+
+      - run:
+          name: Docker Build & Deploy
+          command: |
+            docker login -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
+            STABLE_TAG='1.0'
+            TAG="${STABLE_TAG}.${CIRCLE_BUILD_NUM}"
+            TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
+            IMAGE="${TAGGED_IMAGE}:${TAG}"
+            echo "image: $IMAGE"
+            docker build -t "$IMAGE" ./docker/
+            docker push "${IMAGE}"
+
 workflows:
   version: 2
   workflow:
     jobs:
       - build_test:
+          filters:
+            branches:
+              only: master
+      - build_deploy:
+          context: GITHUB_SECRET
+          requires:
+            - build_test
           filters:
             branches:
               only: master
