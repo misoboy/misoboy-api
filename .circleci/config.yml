@@ -17,14 +17,15 @@ jobs:
           command : |
             chmod +x mvnw
             ./mvnw -e clean test jacoco:report coveralls:report
-            pwd
+            mkdir deploy
+            cp ./target/*.jar ./deploy
+            mv ./docker ./deploy
+            mv ./k8s ./deploy
 
       - persist_to_workspace:
           root: /home/circleci/project
           paths:
-            - k8s
-            - docker
-            - target/api-0.0.1-SNAPSHOT.jar
+            - deploy
 
   build_deploy:
     machine: true
@@ -37,13 +38,14 @@ jobs:
           command: |
             pwd
             ls -al
+            ls -al ./deploy
             docker login https://docker.pkg.github.com -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
             STABLE_TAG='1.0'
             TAG="${STABLE_TAG}.${CIRCLE_BUILD_NUM}"
             TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
             IMAGE="${TAGGED_IMAGE}:${TAG}"
             echo "image: $IMAGE"
-            docker build -t "$IMAGE" ./docker/
+            docker build -t "$IMAGE" ./deploy/docker/
             docker push "${IMAGE}"
 
 workflows:
