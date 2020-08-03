@@ -79,7 +79,7 @@ workflows:
           context: GITHUB_SECRET
           requires:
             - build_deploy
-            filters:
-              branches:
-                only: master
+          filters:
+            branches:
+              only: master
 
