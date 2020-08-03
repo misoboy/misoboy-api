@@ -5,13 +5,12 @@ import kr.misoboy.api.common.SecurityConst;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import javax.annotation.Resource;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,11 +18,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @SpringJUnitConfig
 @ActiveProfiles("test")
-@WithMockUser(username = SecurityConst.API_ACCESS_USER_ID, password = SecurityConst.API_ACCESS_USER_PWD, roles = SecurityConst.API_ACCESS_USER_ROLE)
+@WithMockUser(roles = {SecurityConst.API_ACCESS_USER_ROLE})
 public class FeedControllerTest extends AbstractSpringTest {
 
-    @Resource
-    protected MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
     @DisplayName("ut_feed_101 : Feed 목록 조회 테스트")
     @Test

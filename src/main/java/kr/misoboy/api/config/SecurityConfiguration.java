@@ -1,19 +1,22 @@
 package kr.misoboy.api.config;
 
 import kr.misoboy.api.common.SecurityConst;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
+import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-@Configuration
-@EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@KeycloakConfiguration
+public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {
             "/h2-console/**",
@@ -27,38 +30,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     };
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser(SecurityConst.API_ACCESS_USER_ID)
-                .password("{noop}" + SecurityConst.API_ACCESS_USER_PWD)
-                .roles(SecurityConst.API_ACCESS_USER_ROLE);
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/v1/**").hasRole(SecurityConst.API_ACCESS_USER_ROLE)
                 .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .headers().frameOptions().sameOrigin()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint())
-                .accessDeniedHandler(accessDeniedHandler())
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .permitAll();
     }
 
-    private AuthenticationEntryPoint authenticationEntryPoint(){
-        return (request, response, e) -> response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+        auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
-    private AccessDeniedHandler accessDeniedHandler(){
-        return (request, response, e) -> response.setStatus(HttpStatus.FORBIDDEN.value());
+    @Bean
+    public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
+        return new KeycloakSpringBootConfigResolver();
+    }
+
+    @Override
+    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 }

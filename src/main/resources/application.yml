@@ -2,7 +2,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /
+    context-path: /api
 
 logging:
   config: classpath:logback.xml
@@ -11,7 +11,7 @@ logging:
 spring:
   h2:
     console:
-      enabled: true
+      enabled: false
       path: /h2-console
       settings:
         trace: false
@@ -36,3 +36,19 @@ mybatis:
   mapper-locations: classpath:sql/${spring.datasource.platform}/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+# keycloak config
+keycloak:
+  auth-server-url: https://dev.misoboy.kr/auth
+  realm: demo
+  resource: demo-api
+  public-client: true
+  enabled: true
+# spring security 대체
+#security-constraints:
+#  - auth-roles:
+#      - general-user
+#    security-collections:
+#      - patterns:
+#        - /v1/*
+
