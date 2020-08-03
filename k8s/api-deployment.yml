@@ -15,7 +15,7 @@ spec:
         misoboy-service: app-api
     spec:
       containers:
-        - name: jenkins
+        - name: app-api
           image: docker.pkg.github.com/misoboy/misoboy-api/misoboy-api:1.0
           ports:
             - containerPort: 8080
