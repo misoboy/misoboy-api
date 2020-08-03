@@ -20,7 +20,5 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
-      volumes:
-        - name: host-docker
-          hostPath:
-            path: /var/run
+      imagePullSecrets:
+        - name: regcred
