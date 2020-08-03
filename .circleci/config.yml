@@ -35,6 +35,8 @@ jobs:
       - run:
           name: Docker Build & Deploy
           command: |
+            pwd
+            ls -al
             docker login https://docker.pkg.github.com -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
             STABLE_TAG='1.0'
             TAG="${STABLE_TAG}.${CIRCLE_BUILD_NUM}"
