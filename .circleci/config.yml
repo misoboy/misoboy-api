@@ -19,8 +19,7 @@ jobs:
             ./mvnw -e clean package jacoco:report coveralls:report
             mkdir deploy
             cp ./target/*.jar ./deploy
-            mv ./docker ./deploy
-            mv ./k8s ./deploy
+            cp ./docker/* ./deploy
 
       - persist_to_workspace:
           root: /home/circleci/project
@@ -42,7 +41,7 @@ jobs:
             TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
             IMAGE="${TAGGED_IMAGE}:${TAG}"
             echo "image: $IMAGE"
-            docker build -t "$IMAGE" ./deploy/docker/
+            docker build -t "$IMAGE" ./deploy/
             docker push "${IMAGE}"
 
 workflows:
