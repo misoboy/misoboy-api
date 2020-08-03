@@ -43,7 +43,7 @@ jobs:
             echo "image: $IMAGE"
             docker build -t "$IMAGE" ./deploy/
             docker push "${IMAGE}"
-  deploy_docker:
+  deploy_argocd:
     machine: true
     steps:
       - run:
@@ -68,17 +68,17 @@ workflows:
           filters:
             branches:
               only: master
-      - build_deploy:
+      - build_docker:
           context: GITHUB_SECRET
           requires:
             - build_test
           filters:
             branches:
               only: master
-      - deploy_docker:
+      - deploy_argocd:
           context: GITHUB_SECRET
           requires:
-            - build_deploy
+            - build_docker
           filters:
             branches:
               only: master
