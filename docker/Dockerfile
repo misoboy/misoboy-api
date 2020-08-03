@@ -5,5 +5,6 @@ WORKDIR /usr/app
 COPY ../target/api-0.0.1-SNAPSHOT.jar ./
 COPY entry-point.sh ./
 
-ENTRYPOINT["entry-point.sh"]
+CMD ["java", "-jar", "/usr/app/api-0.0.1-SNAPSHOT.jar"]
+
 EXPOSE 8080
