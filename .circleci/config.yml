@@ -24,7 +24,7 @@ jobs:
           paths:
             - k8s
             - docker
-            - target/*.jar
+            - target/api-0.0.1-SNAPSHOT.jar
 
   build_deploy:
     machine: true
