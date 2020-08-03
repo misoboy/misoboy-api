@@ -16,7 +16,7 @@ jobs:
           name : Maven Test the Project
           command : |
             chmod +x mvnw
-            ./mvnw -e clean test jacoco:report coveralls:report
+            ./mvnw -e clean package jacoco:report coveralls:report
             mkdir deploy
             pwd
             ls -al
