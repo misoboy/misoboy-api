@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: app-api-service
+spec:
+  selector:
+    misoboy-service: app-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http

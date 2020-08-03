@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-api-deploy
+  labels:
+    misoboy-service: app-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      misoboy-service: app-api
+  template:
+    metadata:
+      labels:
+        misoboy-service: app-api
+    spec:
+      containers:
+        - name: jenkins
+          image: docker.pkg.github.com/misoboy/misoboy-api/misoboy-api:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      volumes:
+        - name: host-docker
+          hostPath:
+            path: /var/run
