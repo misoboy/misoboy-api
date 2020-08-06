@@ -25,7 +25,7 @@ spec:
     blueGreen: 
       # activeService는 Green이 Blue로 승격 시 새 템플릿 해시로 업데이트 할 Service를 지정한다.
       # 이 필드는 blueGreen 업데이트 전략에 필수값이다.
-      activeService: rollout-bluegreen-active
+      activeService: app-api-service-active
       # previewService는 Green이 Blue로 승격 되기 전에 새 템플릿 해시로 업데이트 할 Service를 지정한다.
       # 이를 통해 프로덕션 트래픽을 제공하지 않고 미리보기 스택을 통해 테스트 해볼 수 있다.
       # 이 필드는 선택 사항이다.
