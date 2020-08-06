@@ -59,7 +59,7 @@ jobs:
             git config user.email "misoboy.kor@gmail.com"
             git config user.name "misoboy"
             git commit -m "Update via CircleCI"
-            git push -q https://$GITHUB_PACKAGE_PASSWORD@github.com/misoboy/misoboy-api.git argocd
+            git push -q https://$GITHUB_PACKAGE_PASSWORD@github.com/misoboy/misoboy-api.git argocd_bluegreen
 
 workflows:
   version: 2
