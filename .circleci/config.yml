@@ -51,7 +51,7 @@ jobs:
           command: |
             STABLE_TAG="1.0"
             TAG="${STABLE_TAG}.${CIRCLE_PREVIOUS_BUILD_NUM}"
-            git clone -b argocd https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
+            git clone -b argocd_bluegreen https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
             cd /tmp/misoboy-api
             sed -i -E 's/(misoboy-api\:)(([0-9])|(\.)){1,}/misoboy-api:'$TAG'/' ./k8s/api-rollout.yml
             git add .
