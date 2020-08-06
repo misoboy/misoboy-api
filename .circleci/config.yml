@@ -53,7 +53,7 @@ jobs:
             TAG="${STABLE_TAG}.${CIRCLE_PREVIOUS_BUILD_NUM}"
             git clone -b argocd https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
             cd /tmp/misoboy-api
-            sed -i -E 's/(misoboy-api\:)(([0-9])|(\.)){1,}/misoboy-api:'$TAG'/' ./k8s/api-deployment.yml
+            sed -i -E 's/(misoboy-api\:)(([0-9])|(\.)){1,}/misoboy-api:'$TAG'/' ./k8s/api-rollout.yml
             git add .
             git config credential.helper 'cache --timeout=120'
             git config user.email "misoboy.kor@gmail.com"
