@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
+@EnableConfigurationProperties(SwaggerConfigurationProperties.class)
 public class WebConfiguration implements WebMvcConfigurer {
 
     @Override

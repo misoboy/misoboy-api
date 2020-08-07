@@ -7,8 +7,8 @@ import springfox.documentation.service.TokenRequestEndpoint;
 
 import java.util.List;
 
-@ConfigurationProperties(prefix = "swagger")
 @Data
+@ConfigurationProperties(prefix = "swagger")
 public class SwaggerConfigurationProperties {
     private boolean enabled;
     private String includePatterns = "";

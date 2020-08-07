@@ -25,18 +25,13 @@ import static com.google.common.collect.Sets.newHashSet;
 @Configuration
 @EnableSwagger2
 @ConditionalOnProperty(name = "swagger.enabled", havingValue = "true", matchIfMissing = false)
-@EnableConfigurationProperties(SwaggerConfigurationProperties.class)
 public class SwaggerConfiguration {
 
     public static final String DEFAULT_INCLUDE_PATTERN = "/.*";
     public static final String securitySchemaOAuth2 = "oauth2Scheme";
 
-    private SwaggerConfigurationProperties swaggerConfigurationProperties;
-
     @Autowired
-    public void swaggerConfigurationProperties(SwaggerConfigurationProperties swaggerConfigurationProperties){
-        this.swaggerConfigurationProperties = swaggerConfigurationProperties;
-    }
+    private SwaggerConfigurationProperties swaggerConfigurationProperties;
 
     private Docket commonApiDoc(){
         return new Docket(DocumentationType.SWAGGER_2)
