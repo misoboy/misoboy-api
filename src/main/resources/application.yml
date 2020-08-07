@@ -60,7 +60,7 @@ swagger:
   includePatterns: ".*"
   title: Demo API
   description: Demo API Application for Spring boot and Keycloak
-  version: 1.1
+  version: 1.2
   termsOfServiceUrl: https://dev.misoboy.kr/auth
   contactName: Chiseok Song
   contactUrl: https://github.com/misoboy
