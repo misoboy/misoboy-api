@@ -29,7 +29,7 @@ spec:
       # previewService는 Green이 Blue로 승격 되기 전에 새 템플릿 해시로 업데이트 할 Service를 지정한다.
       # 이를 통해 프로덕션 트래픽을 제공하지 않고 미리보기 스택을 통해 테스트 해볼 수 있다.
       # 이 필드는 선택 사항이다.
-      #previewService: app-api-service-preview
+      previewService: app-api-service-preview
       # autoPromotionEnabled는 승격 직전에 롤아웃을 일시 중지하여 새 스택의 승격을 자동으로 비활성화한다.
       # 이 옵션을 생략하면 기본 동작은 ReplicaSet이 완전히 준비/사용 가능한 즉시 새 스택을 승격시킨다.
       # 이 옵션을 true로 설정 한다면, 다음 명령어를 사용하여 롤아웃을 재개 할 수 있다.
