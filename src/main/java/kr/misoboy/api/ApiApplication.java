@@ -8,8 +8,6 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 public class ApiApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Blue/Green Deploy TEST1!!");
 		SpringApplication.run(ApiApplication.class, args);
 	}
-
 }
