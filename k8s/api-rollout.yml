@@ -3,8 +3,8 @@ kind: Rollout
 metadata:
   name: app-api-rollout
 spec:
-  replicas: 2
-  revisionHistoryLimit: 2
+  replicas: 1
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       misoboy-service: app-api
