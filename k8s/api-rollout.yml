@@ -22,8 +22,6 @@ spec:
       imagePullSecrets:
         - name: regcred
   strategy:
-    canary: 
-      strategy:
     canary: # 카나리아 전략에 구성 가능한 옵션을 제공하는 데 사용되는 새로운 필드
       steps:
       - setWeight: 20 # 카나리아로 전송해야하는 트래픽의 백분율.
