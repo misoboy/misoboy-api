@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/custom-http-errors: "400,404,500"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/default-backend: "default/app-custom-error-page-service"
+    nginx.ingress.kubernetes.io/default-backend: "app-custom-error-page-service"
   name: app-service-ingress
   #namespace: ingress-nginx
 spec:
