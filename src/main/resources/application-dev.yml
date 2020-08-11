@@ -1,3 +1,6 @@
+logging:
+  config: classpath:logback-dev.xml
+
 # keycloak config
 keycloak:
   auth-server-url: https://dev.misoboy.kr/auth
