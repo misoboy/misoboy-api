@@ -74,6 +74,6 @@ public class SwaggerConfigurationProperties {
 
     @Data
     public static class Protocol {
-        private boolean httpOnly = false;
+        private boolean httpsOnly = false;
     }
 }

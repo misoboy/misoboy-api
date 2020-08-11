@@ -38,7 +38,7 @@ public class SwaggerConfiguration {
                 .apiInfo(apiInfo())
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(true)
-                .protocols(null != swaggerConfigurationProperties.getProtocol() && swaggerConfigurationProperties.getProtocol().isHttpOnly() ? newHashSet("https") : newHashSet("http", "https"))
+                .protocols(null != swaggerConfigurationProperties.getProtocol() && swaggerConfigurationProperties.getProtocol().isHttpsOnly() ? newHashSet("https") : newHashSet("http", "https"))
                 .genericModelSubstitutes(ResponseEntity.class)
                 .ignoredParameterTypes(java.sql.Date.class)
                 //.directModelSubstitute(LocalDate.class, java.sql.Date.class)

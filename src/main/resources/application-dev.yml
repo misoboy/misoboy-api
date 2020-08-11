@@ -1,0 +1,66 @@
+# keycloak config
+keycloak:
+  auth-server-url: https://dev.misoboy.kr/auth
+  realm: demo
+  resource: demo-api
+  public-client: true
+  enabled: true
+  cors: false
+# spring security 대체
+#security-constraints:
+#  - auth-roles:
+#      - general-user
+#    security-collections:
+#      - patterns:
+#        - /v1/*
+
+
+# swagger config
+swagger:
+  enabled: true
+  includePatterns: ".*"
+  title: Demo API
+  description: Demo API Application for Spring boot and Keycloak
+  version: 1.6
+  termsOfServiceUrl: https://dev.misoboy.kr/auth
+  contactName: Chiseok Song
+  contactUrl: https://github.com/misoboy
+  contactEmail: misoboy.kor@gmail.com
+  license:
+  licenseUrl:
+  enableTryOutMethods: true
+  security:
+    enabled: true
+    realm: ${keycloak.realm}
+    apiName: demo-api
+    apiKey: Authorization
+    globalScopes:
+      - name: demo-api-general-scope
+        description:
+      - name: email
+        description:
+      - name: profile
+        description:
+    flow: resourceOwnerPassword # clientCredentials, resourceOwnerPassword, authorizationCode, implicit
+    clientCredentialsFlow:
+      tokenEndpointUrl: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/token/
+      clientSecret:
+      clientId: ${keycloak.resource}
+    resourceOwnerPasswordFlow:
+      tokenEndpointUrl: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/token/
+      clientSecret:
+      clientId: ${keycloak.resource}
+    authorizationCodeFlow:
+      tokenEndpoint:
+        url: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/token/
+        tokenName:
+      tokenRequestEndpoint:
+        url: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/token/
+        clientIdName: ${keycloak.resource}
+        clientSecretName:
+    implicitFlow:
+      authorizationEndpointUrl: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/token/
+      clientSecret:
+      clientId: ${keycloak.resource}
+  protocol:
+    httpsOnly: true
