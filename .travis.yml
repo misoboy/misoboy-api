@@ -20,7 +20,7 @@ language: java
 services:
   - docker
 
-install: false
+install: true
 
 before_install:
   - chmod +x mvnw
