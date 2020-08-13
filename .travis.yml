@@ -1,4 +1,5 @@
 language: java
+sudo: true
 jdk:
   - openjdk8
 
@@ -17,6 +18,9 @@ services:
 env:
   global:
     - STABLE_TAG: 2.0
+
+before_install:
+  - chmod +x mvnw
 
 jobs:
   include:
