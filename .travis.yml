@@ -3,14 +3,24 @@ sudo: true
 jdk:
   - openjdk8
 
+services:
+  - docker
+
 branched:
   only:
     - master
+
+before_cache:
+  # Save tagged docker images
+  - >
+    mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+    | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip -2 > $HOME/docker/$1.tar.gz'
 
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
+    - '$HOME/docker'
 
 env:
   global:
@@ -21,6 +31,8 @@ install: true
 
 before_install:
   - chmod +x mvnw
+  # Load cached docker images
+  - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
 
 jobs:
   include:
@@ -29,8 +41,6 @@ jobs:
         - ./mvnw -e clean package jacoco:report coveralls:report
 
     - stage: Docker Build & Deploy
-      services:
-        - docker
       script:
         - ./mvnw -e clean package -DskipTests
         - mkdir deploy
@@ -45,8 +55,6 @@ jobs:
         - docker push "${IMAGE}"
 
     - stage: ArgoCD Deploy
-      services:
-        - docker
       script:
         - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
         - git clone -b argocd_canary https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
