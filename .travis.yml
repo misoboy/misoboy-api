@@ -1,7 +1,5 @@
 language: java
 sudo: true
-jdk:
-  - openjdk8
 
 branched:
   only:
@@ -25,8 +23,9 @@ before_install:
 jobs:
   include:
     - stage: Maven Test the Project
+      jdk:
+        - openjdk8
       script:
-        - chmod +x mvnw
         - ./mvnw -e clean package jacoco:report coveralls:report
         - mkdir deploy
         - cp ./target/*.jar ./deploy
@@ -38,7 +37,7 @@ jobs:
         - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
         - TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
         - IMAGE="${TAGGED_IMAGE}:${TAG}"
-        - echo "image: $IMAGE"
+        - echo 'image:' $IMAGE
         - docker build --build-arg SPRING_PROFILES_ACTIVE=dev -t "$IMAGE" ./deploy/
         - docker push "${IMAGE}"
 
