@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: app-api
-        image: docker.pkg.github.com/misoboy/misoboy-api/misoboy-api:1.0.132
+        image: docker.pkg.github.com/misoboy/misoboy-api/misoboy-api:1.0.135
         ports:
         - containerPort: 8080
           protocol: TCP
