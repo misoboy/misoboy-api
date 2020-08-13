@@ -20,18 +20,19 @@ language: java
 services:
   - docker
 
+install: false
+
 before_install:
   - chmod +x mvnw
 
 jobs:
   include:
     - stage: Maven Test the Project
-      install: false
       script:
         - ./mvnw -e clean package jacoco:report coveralls:report
-
     - stage: Docker Build & Deploy
       script:
+        - ./mvnw -e clean package -DSkipTests
         - mkdir deploy
         - cp ./target/*.jar ./deploy
         - cp ./docker/* ./deploy
