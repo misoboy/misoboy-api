@@ -14,8 +14,8 @@ env:
     - STABLE_TAG: 2.0
 
 language: java
-  jdk:
-    - openjdk8
+jdk:
+  - openjdk8
 
 services:
   - docker
