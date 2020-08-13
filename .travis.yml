@@ -1,4 +1,7 @@
+language: java
 sudo: true
+jdk:
+  - openjdk8
 
 branched:
   only:
@@ -12,13 +15,7 @@ cache:
 env:
   global:
     - STABLE_TAG: 2.0
-
-language: java
-jdk:
-  - openjdk8
-
-services:
-  - docker
+    - SPRING_PROFILES_ACTIVE: dev
 
 install: true
 
@@ -30,9 +27,12 @@ jobs:
     - stage: Maven Test the Project
       script:
         - ./mvnw -e clean package jacoco:report coveralls:report
+
     - stage: Docker Build & Deploy
+      services:
+        - docker
       script:
-        - ./mvnw -e clean package -DSkipTests
+        - ./mvnw -e clean package -DskipTests
         - mkdir deploy
         - cp ./target/*.jar ./deploy
         - cp ./docker/* ./deploy
@@ -41,10 +41,12 @@ jobs:
         - TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
         - IMAGE="${TAGGED_IMAGE}:${TAG}"
         - echo 'image:' $IMAGE
-        - docker build --build-arg SPRING_PROFILES_ACTIVE=dev -t "$IMAGE" ./deploy/
+        - docker build --build-arg SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE -t "$IMAGE" ./deploy/
         - docker push "${IMAGE}"
 
     - stage: ArgoCD Deploy
+      services:
+        - docker
       script:
         - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
         - git clone -b argocd_canary https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
