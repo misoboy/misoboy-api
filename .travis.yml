@@ -1,0 +1,60 @@
+language: java
+jdk:
+  - openjdk8
+
+branched:
+  only:
+    - master
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+services:
+  - docker
+
+env:
+  global:
+    - STABLE_TAG: 2.0
+
+install:
+  - sudo apt-get update
+  - sudo apt-get -y install git-all
+
+jobs:
+  include:
+    - stage: Maven Test the Project
+      script:
+        - chmod +x mvnw
+        - ./mvnw -e clean package jacoco:report coveralls:report
+        - mkdir deploy
+        - cp ./target/*.jar ./deploy
+        - cp ./docker/* ./deploy
+
+    - stage: Docker Build & Deploy
+      script:
+        - docker login https://docker.pkg.github.com -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
+        - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
+        - TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
+        - IMAGE="${TAGGED_IMAGE}:${TAG}"
+        - echo "image: $IMAGE"
+        - docker build --build-arg SPRING_PROFILES_ACTIVE=dev -t "$IMAGE" ./deploy/
+        - docker push "${IMAGE}"
+
+    - stage: ArgoCD Deploy
+      script:
+        - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
+        - git clone -b argocd_canary https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
+        - cd /tmp/misoboy-api
+        - sed -i -E 's/(misoboy-api\:)(([0-9])|(\.)){1,}/misoboy-api:'$TAG'/' ./k8s/api-rollout.yml
+        - git add .
+        - git config credential.helper 'cache --timeout=120'
+        - git config user.email "misoboy.kor@gmail.com"
+        - git config user.name "misoboy"
+        - git commit -m "Update via TravisCI"
+        - git push -q https://$GITHUB_PACKAGE_PASSWORD@github.com/misoboy/misoboy-api.git argocd_canary
+
+notifications:
+  email:
+    - misoboy.report@gmail.com
