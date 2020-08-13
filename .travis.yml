@@ -13,25 +13,28 @@ env:
   global:
     - STABLE_TAG: 2.0
 
+language: java
+  jdk:
+    - openjdk8
+
+services:
+  - docker
+
 before_install:
   - chmod +x mvnw
 
 jobs:
   include:
     - stage: Maven Test the Project
-      language: java
-      jdk:
-        - openjdk8
+      install: false
       script:
         - ./mvnw -e clean package jacoco:report coveralls:report
+
+    - stage: Docker Build & Deploy
+      script:
         - mkdir deploy
         - cp ./target/*.jar ./deploy
         - cp ./docker/* ./deploy
-
-    - stage: Docker Build & Deploy
-      services:
-        - docker
-      script:
         - docker login https://docker.pkg.github.com -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
         - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
         - TAGGED_IMAGE="docker.pkg.github.com/misoboy/misoboy-api/misoboy-api"
@@ -41,8 +44,6 @@ jobs:
         - docker push "${IMAGE}"
 
     - stage: ArgoCD Deploy
-      services:
-        - docker
       script:
         - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
         - git clone -b argocd_canary https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
