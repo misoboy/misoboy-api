@@ -1,4 +1,3 @@
-language: java
 sudo: true
 
 branched:
@@ -10,9 +9,6 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-services:
-  - docker
-
 env:
   global:
     - STABLE_TAG: 2.0
@@ -23,6 +19,7 @@ before_install:
 jobs:
   include:
     - stage: Maven Test the Project
+      language: java
       jdk:
         - openjdk8
       script:
@@ -32,6 +29,8 @@ jobs:
         - cp ./docker/* ./deploy
 
     - stage: Docker Build & Deploy
+      services:
+        - docker
       script:
         - docker login https://docker.pkg.github.com -u $GITHUB_PACKAGE_USERNAME -p $GITHUB_PACKAGE_PASSWORD
         - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
@@ -42,6 +41,8 @@ jobs:
         - docker push "${IMAGE}"
 
     - stage: ArgoCD Deploy
+      services:
+        - docker
       script:
         - TAG="${STABLE_TAG}.${TRAVIS_BUILD_NUMBER}"
         - git clone -b argocd_canary https://github.com/misoboy/misoboy-api.git /tmp/misoboy-api
