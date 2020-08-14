@@ -18,4 +18,4 @@ spec:
           - path: /api
             backend:
               serviceName: app-api-service-active
-              servicePort: 8080
+              servicePort: 443

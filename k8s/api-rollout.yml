@@ -28,17 +28,3 @@ spec:
       #- pause: {} # 롤아웃을 일시 중시하도록 지시한다. 
         # pause 구조체 내에 duration 필드가 설정되어 있으면 duration 필드의 값만큼 기다린 후 롤아웃을 진행한다.
         # 그렇지 않으면, 일시 중지 조건이 제거될 때 까지 롤아웃이 무기한 대기한다.
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: app-api-service-active
-spec:
-  selector:
-    misoboy-service: app-api
-  ports:
-  - protocol: TCP
-    port: 8080
-    targetPort: 8080
-    name: http
