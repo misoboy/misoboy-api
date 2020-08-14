@@ -1,4 +1,4 @@
-## API Demo Application [![Build Status](https://travis-ci.org/misoboy/misoboy-api.svg?branch=master)](https://travis-ci.org/misoboy/misoboy-api) [![Coverage Status](https://coveralls.io/repos/github/misoboy/misoboy-api/badge.svg?branch=master)](https://coveralls.io/github/misoboy/misoboy-api?branch=master)
+## API Demo Application [![Build Status](https://travis-ci.com/misoboy/misoboy-api.svg?branch=master)](https://travis-ci.com/misoboy/misoboy-api) [![Coverage Status](https://coveralls.io/repos/github/misoboy/misoboy-api/badge.svg?branch=master)](https://coveralls.io/github/misoboy/misoboy-api?branch=master)
 
 
 ## Requirements
